@@ -12,6 +12,9 @@ const path = require("path"); // path 모듈 추가
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use("/posts", postRoutes); // 게시글 라우트 추가
+app.use("/replies", replyRoutes); // 댓글 라우트 추가
+
 // // 뷰 엔진 설정
 // app.set("view engine", "ejs");
 // app.set("views", path.join(__dirname, "views")); // views 폴더 경로 설정
