@@ -4,12 +4,6 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
   id: { type: String, required: true, unique: true },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    match: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/,
-  }, // 이메일 필드 추가
   password: { type: String, required: true }, // 해시 형태로 저장
   nickName: { type: String, required: true, unique: true },
   isAdmin: { type: Boolean, default: false }, // 기본값 false

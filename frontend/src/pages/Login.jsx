@@ -22,6 +22,7 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // 여기에 로그인 처리
     if (formData.username === "admin" && formData.password === "1234") {
       alert("로그인 성공! 홈 화면으로 이동합니다.");
       navigate("/");

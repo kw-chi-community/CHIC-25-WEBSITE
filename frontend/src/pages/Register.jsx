@@ -4,6 +4,8 @@ import Banner from "../components/Banner";
 import "../styles/Register.css";
 
 const Register = () => {
+  const address = process.env.REACT_APP_BACKEND_ADDRESS;
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -22,7 +24,7 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
@@ -30,8 +32,31 @@ const Register = () => {
       return;
     }
 
-    alert("회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.");
-    navigate("/login");
+    try {
+      const response = await fetch(`${address}/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: formData.username,
+          password: formData.password,
+          nickName: formData.nickname,
+        }),
+      });
+
+      const result = await response.json();
+      console.log(result);
+      if (!response.ok) {
+        throw new Error(result.message || "회원가입 요청이 실패했습니다.");
+      }
+
+      alert("회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.");
+      navigate("/login");
+    } catch (error) {
+      console.error("Error:", error);
+      setError("회원가입 중 오류가 발생했습니다.");
+    }
   };
 
   return (
@@ -59,18 +84,6 @@ const Register = () => {
               name="nickname"
               placeholder="닉네임"
               value={formData.nickname}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="input-group">
-            <label>이메일 *</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="이메일"
-              value={formData.email}
               onChange={handleChange}
               required
             />
