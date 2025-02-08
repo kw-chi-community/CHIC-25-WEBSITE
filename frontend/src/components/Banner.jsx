@@ -1,14 +1,18 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import "../styles/Banner.css";
 import mainLogo from "../assets/mainLogo.png";
 
 const Banner = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   return (
     <header className="banner">
-      <div className="main-logo" onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
+      <div
+        className="main-logo"
+        onClick={() => navigate("/")}
+        style={{ cursor: "pointer" }}
+      >
         <img src={mainLogo} alt="Chicly Logo" />
       </div>
       <nav className="banner-nav">
@@ -25,8 +29,16 @@ const Banner = () => {
           <li className="menu-item">
             NOTICE
             <ul className="sub-menu">
-              <li>공지사항</li>
-              <li>학사 일정(캘린더)</li>
+              <li
+                onClick={() => navigate("/notice")}
+                style={{ cursor: "pointer" }}
+              >
+                공지사항
+              </li>
+              <li
+                onClick={() => navigate("/calendar")}
+                style={{ cursor: "pointer" }}
+              >학사 일정</li>
             </ul>
           </li>
           <li className="menu-item">
@@ -42,7 +54,9 @@ const Banner = () => {
               <li>지원하기</li>
             </ul>
           </li>
-          <li className="banner-login" onClick={() => navigate("/login")}>LOGIN</li> 
+          <li className="banner-login" onClick={() => navigate("/login")}>
+            LOGIN
+          </li>
         </ul>
       </nav>
     </header>
