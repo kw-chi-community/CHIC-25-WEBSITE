@@ -37,8 +37,7 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            name="ID
-            "
+            name="username"
             placeholder="ID"
             value={formData.username}
             onChange={handleChange}
