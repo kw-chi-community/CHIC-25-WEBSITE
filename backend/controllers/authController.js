@@ -10,12 +10,7 @@ exports.root = async (req, res) => res.redirect("/login");
 
 exports.register = async (req, res) => {
   try {
-    const { id, nickName, email, password, confirmPassword } = req.body;
-    if (password !== confirmPassword) {
-      return res
-        .status(400)
-        .json({ success: false, message: "비밀번호가 일치하지 않습니다." });
-    }
+    const { id, nickName, password } = req.body;
 
     const existingUser = await User.findOne({ id });
     const existingtempUser = await tempUser.findOne({ id });
@@ -26,27 +21,35 @@ exports.register = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log(hashedPassword);
 
     // 유저 생성
     const newUser = new tempUser({
       id,
       nickName,
-      email,
       password: hashedPassword,
     });
     // 유저 저장
-    await newUser.save();
+    await newUser
+      .save()
+      .then((savedUser) => {
+        console.log("User saved:", savedUser); // 데이터가 저장되면 출력
+      })
+      .catch((err) => {
+        console.error("Error saving user:", err); // 에러가 발생하면 출력
+      });
     res.status(201).json({
       message: "회원가입이 완료되었습니다.",
       // FE에서 쓸거면 활용
-      userId: newUser.id,
-      nickName: newUser.nickName,
-      email: newUser.email,
+      //userId: newUser.id,
+      //nickName: newUser.nickName,
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: "서버 오류가 발생했습니다(회원가입)." });
+    res.status(500).json({
+      success: false,
+      message: "서버 오류가 발생했습니다(회원가입).",
+      error,
+    });
   }
 };
 
@@ -148,7 +151,6 @@ exports.approveUser = async (req, res) => {
     const newUser = new User({
       id: tempUser.id,
       nickName: tempUser.nickName,
-      email: tempUser.email,
       password: tempUser.password, // 이미 해시된 비밀번호
     });
     await newUser.save();
@@ -176,7 +178,6 @@ exports.rejectUser = async (req, res) => {
     const rejectednewUser = new rejectedUser({
       id: tempUser.id,
       nickName: tempUser.nickName,
-      email: tempUser.email,
       reason,
     });
     await rejectednewUser.save();
