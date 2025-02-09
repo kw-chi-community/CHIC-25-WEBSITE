@@ -55,9 +55,11 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   const { id, password } = req.body;
+  console.log("로그인 요청 도착:", req.body);
   try {
     // 유저 확인
-    const user = await User.findOne({ id });
+    const user = await tempUser.findOne({ id });
+    //onst user = await User.findOne({ id });
 
     if (!user) {
       return res.status(400).json({ error: "등록되지 않은 사용자입니다." });

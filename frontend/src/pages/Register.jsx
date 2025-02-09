@@ -51,7 +51,7 @@ const Register = () => {
         throw new Error(result.message || "회원가입 요청이 실패했습니다.");
       }
 
-      alert("회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.");
+      alert("회원가입 신청이 완료되었습니다! 로그인 페이지로 이동합니다.");
       navigate("/login");
     } catch (error) {
       console.error("Error:", error);
