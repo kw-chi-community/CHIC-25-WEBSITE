@@ -7,7 +7,7 @@ const Login = () => {
   const address = process.env.REACT_APP_BACKEND_ADDRESS;
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: "",
+    id: "",
     password: "",
   });
 
@@ -75,8 +75,9 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            name="username"
-            placeholder="ID"
+            name="id"
+            placeholder="id"
+
             value={formData.username}
             onChange={handleChange}
             required
