@@ -1,8 +1,8 @@
-// models/user.js
+// models/tempuser.js
 
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
+const tempuserSchema = new mongoose.Schema({
   id: { type: String, required: true, unique: true },
   password: { type: String, required: true }, // 해시 형태로 저장
   nickName: { type: String, required: true, unique: true },
@@ -17,6 +17,6 @@ const userSchema = new mongoose.Schema({
   interests: { type: [String], default: [] }, // 관심사
 });
 
-const User = mongoose.model("User", userSchema);
+const tempUser = mongoose.model("tempUser", tempuserSchema);
 
-module.exports = User;
+module.exports = tempUser;

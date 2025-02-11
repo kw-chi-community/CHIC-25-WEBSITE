@@ -1,8 +1,7 @@
-// models/user.js
-
+// models/rejecteduser.js
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
+const rejecteduserSchema = new mongoose.Schema({
   id: { type: String, required: true, unique: true },
   password: { type: String, required: true }, // 해시 형태로 저장
   nickName: { type: String, required: true, unique: true },
@@ -15,8 +14,10 @@ const userSchema = new mongoose.Schema({
   profileImage: { type: String, default: null }, // 프로필 이미지 URL
   achievements: { type: [String], default: [] }, // 업적
   interests: { type: [String], default: [] }, // 관심사
+
+  reason: { type: String }, // 거절 사유
 });
 
-const User = mongoose.model("User", userSchema);
+const rejectedUser = mongoose.model("rejectedUser", rejecteduserSchema);
 
-module.exports = User;
+module.exports = rejectedUser;

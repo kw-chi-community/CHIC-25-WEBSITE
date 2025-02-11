@@ -1,6 +1,8 @@
 // controllers/authController.js
 require("dotenv").config(); // 환경변수 로드
 const User = require("../models/user");
+const tempUser = require("../models/tempuser");
+const rejectedUser = require("../models/rejecteduser");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -8,41 +10,56 @@ exports.root = async (req, res) => res.redirect("/login");
 
 exports.register = async (req, res) => {
   try {
-    const { id, password, confirmPassword } = req.body;
-    if (password !== confirmPassword) {
-      return res
-        .status(400)
-        .json({ success: false, message: "비밀번호가 일치하지 않습니다." });
-    }
+    const { id, nickName, password } = req.body;
 
     const existingUser = await User.findOne({ id });
-    if (existingUser) {
+    const existingtempUser = await tempUser.findOne({ id });
+    if (existingUser || existingtempUser) {
       return res
         .status(400)
         .json({ success: false, message: "이미 존재하는 ID입니다." });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log(hashedPassword);
 
     // 유저 생성
-    const newUser = new User({ id, password: hashedPassword });
+    const newUser = new tempUser({
+      id,
+      nickName,
+      password: hashedPassword,
+    });
     // 유저 저장
-    await newUser.save();
-    res
-      .status(201)
-      .json({ message: "회원가입이 완료되었습니다.", userId: newUser.id });
+    await newUser
+      .save()
+      .then((savedUser) => {
+        console.log("User saved:", savedUser); // 데이터가 저장되면 출력
+      })
+      .catch((err) => {
+        console.error("Error saving user:", err); // 에러가 발생하면 출력
+      });
+    res.status(201).json({
+      message: "회원가입이 완료되었습니다.",
+      // FE에서 쓸거면 활용
+      //userId: newUser.id,
+      //nickName: newUser.nickName,
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: "서버 오류가 발생했습니다(회원가입)." });
+    res.status(500).json({
+      success: false,
+      message: "서버 오류가 발생했습니다(회원가입).",
+      error,
+    });
   }
 };
 
 exports.login = async (req, res) => {
   const { id, password } = req.body;
+  console.log("로그인 요청 도착:", req.body);
   try {
     // 유저 확인
-    const user = await User.findOne({ id });
+    const user = await tempUser.findOne({ id });
+    //onst user = await User.findOne({ id });
 
     if (!user) {
       return res.status(400).json({ error: "등록되지 않은 사용자입니다." });
@@ -65,9 +82,10 @@ exports.login = async (req, res) => {
 exports.checkIdAvailability = async (req, res) => {
   const { id } = req.body;
   const existingUser = await User.findOne({ id });
+  const existingtempUser = await tempUser.findOne({ id });
 
   // 중복 ID가 없으면 사용 가능
-  if (!existingUser) {
+  if (!existingUser || !existingtempUser) {
     return res.status(200).json({ available: true });
   }
 
@@ -108,4 +126,68 @@ exports.checkHome = async (req, res) => {
 // 로그아웃
 exports.logout = (req, res) => {
   res.status(200).json({ message: "로그아웃되었습니다." });
+};
+
+// 대기 사용자 불러오기 ( FE 작업에 따라 수정 예상 )
+exports.getTempUsers = async (req, res) => {
+  try {
+    const tempUsers = await tempUser.find();
+    res.status(200).json(tempUsers);
+  } catch (error) {
+    res.status(500).json({ message: "서버 오류가 발생했습니다(조회)." });
+  }
+};
+
+// 대기 사용자 승인
+exports.approveUser = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const tempUser = await tempUser.findOne({ id });
+
+    if (!tempUser) {
+      return res
+        .status(404)
+        .json({ message: "대기 중인 사용자를 찾을 수 없습니다." });
+    }
+
+    const newUser = new User({
+      id: tempUser.id,
+      nickName: tempUser.nickName,
+      password: tempUser.password, // 이미 해시된 비밀번호
+    });
+    await newUser.save();
+
+    // tempUser에서 삭제
+    await tempUser.deleteOne({ id });
+    res.status(200).json({ message: "사용자가 승인되었습니다." });
+  } catch (error) {
+    res.status(500).json({ message: "서버 오류가 발생했습니다(승인)." });
+  }
+};
+
+// 대기 사용자 거절
+exports.rejectUser = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const tempUser = await tempUser.findOne({ id });
+
+    if (!tempUser) {
+      return res
+        .status(404)
+        .json({ message: "대기 중인 사용자를 찾을 수 없습니다." });
+    }
+
+    const rejectednewUser = new rejectedUser({
+      id: tempUser.id,
+      nickName: tempUser.nickName,
+      reason,
+    });
+    await rejectednewUser.save();
+
+    // tempUser에서 삭제
+    await tempUser.deleteOne({ id });
+    res.status(200).json({ message: "사용자가 거절되었습니다." });
+  } catch (error) {
+    res.status(500).json({ message: "서버 오류가 발생했습니다(거절)." });
+  }
 };
