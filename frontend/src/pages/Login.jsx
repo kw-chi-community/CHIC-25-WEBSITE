@@ -6,7 +6,7 @@ import "../styles/Login.css";
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: "",
+    id: "",
     password: "",
   });
 
@@ -37,9 +37,9 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            name="ID
+            name="id
             "
-            placeholder="ID"
+            placeholder="id"
             value={formData.username}
             onChange={handleChange}
             required

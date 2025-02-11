@@ -6,7 +6,7 @@ import "../styles/Register.css";
 const Register = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: "",
+    id: "",
     nickname: "",
     email: "",
     password: "",
@@ -44,9 +44,9 @@ const Register = () => {
             <label>아이디 *</label>
             <input
               type="text"
-              name="username"
+              name="id"
               placeholder="아이디"
-              value={formData.username}
+              value={formData.id}
               onChange={handleChange}
               required
             />
