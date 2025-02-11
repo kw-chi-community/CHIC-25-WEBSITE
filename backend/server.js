@@ -4,6 +4,7 @@ require("dotenv").config(); // 환경변수 로드
 const express = require("express");
 const bodyParser = require("body-parser");
 const authRoutes = require("./routes/authRoute"); // 인증 라우트 불러오기
+const userApprovalRoutes = require("./routes/userApprovalRoutes");
 const db = require("./config/db"); // DB 연결 모듈 불러오기
 const app = express();
 const path = require("path"); // path 모듈 추가
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // 라우팅 설정
 app.use("/", authRoutes); // 인증 관련 라우트
+app.use("/user-approval", userApprovalRoutes); // 관리자 승인 라우트트
 
 // 에러 핸들링 미들웨어
 app.use((err, req, res, next) => {
