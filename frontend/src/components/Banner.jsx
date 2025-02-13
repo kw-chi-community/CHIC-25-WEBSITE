@@ -20,9 +20,10 @@ const Banner = () => {
           <li className="menu-item">
             CHICLY
             <ul className="sub-menu">
-              <li>소개</li>
-              <li>조직도</li>
-              <li>연혁</li>
+              <li onClick={() => navigate("/about")}>소개</li>
+              <li onClick={() => navigate("/organization")}>조직도</li>
+              <li onClick={() => navigate("/location")}>오시는 길</li>
+              <li onClick={() => navigate("/history")}>연혁</li>
             </ul>
           </li>
           <li className="menu-item">
