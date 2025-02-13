@@ -15,9 +15,6 @@ const Organization = () => {
               <strong>학회장</strong>
               <span>천성윤</span>
             </div>
-          </div>
-
-          <div className="org-level">
             <div className="org-node vice-president">
               <strong>부학회장</strong>
               <span>전서연</span>
