@@ -1,0 +1,49 @@
+body {
+  background-color: black;
+  color: white;
+  font-family: "Arial", sans-serif;
+  -ms-overflow-style: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.container {
+  padding: 40px;
+  max-width: 800px;
+  margin: 0 auto;
+  color: white;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+p {
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.timeline {
+  list-style: none;
+  padding: 0;
+}
+
+.timeline li {
+  padding: 20px;
+  border-left: 3px solid white;
+  margin-left: 250px;
+  padding-left: 50px;
+  position: relative;
+}
+
+.timeline li .date {
+  font-weight: bold;
+  position: absolute;
+  left: -200px;
+  width: 200px;
+  text-align: center;
+}
