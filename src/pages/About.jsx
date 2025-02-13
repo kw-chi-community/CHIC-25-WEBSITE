@@ -16,7 +16,7 @@ const About = () => {
         </p>
 
         <section className="about-section">
-          <h2>CHIC에 대해서</h2>
+          <h2>😊CHIC에 대해서</h2>
           <p>
             CHIC는 2021년 8월 광운대학교 소프트웨어중심대학 사업단의 주도로
             Student Technical Group(학생 전공동아리)로 만들어졌습니다. 2022년
@@ -26,7 +26,7 @@ const About = () => {
         </section>
 
         <section className="about-section">
-          <h2>이름의 유래</h2>
+          <h2>😄이름의 유래</h2>
           <p>
             CHIC는 우아하다는 의미를 담고 있습니다. 인간-컴퓨터 상호작용 분야의
             가장 저명한 학술대회인{" "}
@@ -43,7 +43,7 @@ const About = () => {
         </section>
 
         <section className="about-section">
-          <h2>목표 및 지향점</h2>
+          <h2>😆목표 및 지향점</h2>
           <p>
             컴퓨터와 인간의 모든 접점에서, 기획, 설계, 개발을 수행하면서 전공의
             실전적 지식을 함양하고, 나아가 인류에게 도움이 되는 소프트웨어를
@@ -52,7 +52,7 @@ const About = () => {
         </section>
 
         <section className="about-section">
-          <h2>CHIC의 활동</h2>
+          <h2>😀CHIC의 활동</h2>
           <p>
             <strong>스터디:</strong> 전공과 관련한 다양한 분야의 스터디를
             진행합니다. 팀원들과 협력하며 지식을 공유하고 성장할 수 있는 학습
