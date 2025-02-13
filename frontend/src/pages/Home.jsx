@@ -4,7 +4,7 @@ import Icons from "../components/Icons";
 import kwLogo from "../assets/kwLogo.png"; 
 import "../styles/Home.css";
 
-const text1 = "CHICLY, 시크를 더 시크답게";
+const text1 = "CHICLY, 치크를 더 치크답게";
 const text2 = "INFORMATION CONVERGENCE";
 
 const Home = () => {
@@ -15,15 +15,23 @@ const Home = () => {
       <main className="home-content">
         <h1>
           {text1.split("").map((char, index) => (
-            <span key={index} className="fade-in" style={{ animationDelay: `${index * 0.05}s` }}>
-              {char}
+            <span
+              key={index}
+              className="fade-in"
+              style={{ animationDelay: `${index * 0.05}s` }}
+            >
+              {char === " " ? "\u00A0" : char} {/* 공백 처리 */}
             </span>
           ))}
         </h1>
         <p className="sub-title">
           {text2.split("").map((char, index) => (
-            <span key={index} className="fade-in" style={{ animationDelay: `${index * 0.05}s` }}>
-              {char}
+            <span
+              key={index}
+              className="fade-in"
+              style={{ animationDelay: `${index * 0.05}s` }}
+            >
+              {char === " " ? "\u00A0" : char} 
             </span>
           ))}
         </p>

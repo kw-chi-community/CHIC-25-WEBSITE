@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Notice from "./pages/Notice";
 import Calendar from "./pages/Calendar";
+import FreeBoard from "./pages/FreeBoard";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/notice" element={<Notice />} />
         <Route path="/calendar" element={<Calendar />} />
+        <Route path="/freeboard" element={<FreeBoard />} />
       </Routes>
     </Router>
   );
