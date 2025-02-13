@@ -1,0 +1,12 @@
+.board-container {
+  margin-top: 20px;
+  margin-left: 100px;
+  padding: 12px 16px;
+  width: 600px;
+  border-radius: 4px;
+  border: 2px solid #666;
+  background-color: #f9f9f9;
+  display: inline-block;
+  font-size: 20px;
+  font-weight: bold;
+}
