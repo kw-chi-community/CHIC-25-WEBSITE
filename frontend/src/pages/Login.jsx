@@ -30,7 +30,7 @@ const Login = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: formData.username,
+          id: formData.id,
           password: formData.password,
         }),
       });
@@ -77,8 +77,7 @@ const Login = () => {
             type="text"
             name="id"
             placeholder="id"
-
-            value={formData.username}
+            value={formData.id}
             onChange={handleChange}
             required
           />
