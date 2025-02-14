@@ -46,7 +46,12 @@ const Banner = () => {
           <li className="menu-item">
             COMMUNITY
             <ul className="sub-menu">
-              <li>자유게시판</li>
+              <li
+                onClick={() => navigate("/freeboard")}  
+                style={{ cursor: "pointer" }}
+              >
+                자유게시판
+              </li>
               <li>비밀게시판</li>
             </ul>
           </li>
