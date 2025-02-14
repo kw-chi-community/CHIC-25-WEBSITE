@@ -4,7 +4,7 @@ require("dotenv").config(); // 환경변수 로드
 const express = require("express");
 const bodyParser = require("body-parser");
 const authRoutes = require("./routes/authRoute"); // 인증 라우트 불러오기
-const userApprovalRoutes = require("./routes/userApprovalRoutes");
+const userApprovalRoutes = require("./routes/userApprovalRoute");
 const db = require("./config/db"); // DB 연결 모듈 불러오기
 const app = express();
 const path = require("path"); // path 모듈 추가
