@@ -67,9 +67,13 @@ exports.login = async (req, res) => {
     if (!(await bcrypt.compare(password, user.password))) {
       return res.status(400).json({ error: "비밀번호가 잘못되었습니다." });
     }
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { userId: user.id, userStatus: user.status },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
 
     console.log("갓 발급한 토큰(authController_login):", token); // 로그 추가
     res.status(200).json({ token, userId: user.id });
@@ -190,4 +194,9 @@ exports.rejectUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "서버 오류가 발생했습니다(거절)." });
   }
+};
+
+// 토큰 검증
+exports.verifyToken = (req, res) => {
+  res.status(200).json({ success: true, user: req.user });
 };

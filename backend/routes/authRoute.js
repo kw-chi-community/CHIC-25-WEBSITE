@@ -24,6 +24,9 @@ router.post("/login", authController.login);
 // 아이디 중복 체크 엔드포인트
 router.get("/check-id", authController.checkIdAvailability);
 
+// 토큰 검증
+router.get("/verify", authMiddleware, authController.verifyToken);
+
 // 회원가입 대기 엔드포인트
 router.get("/get-temp-users", authController.getTempUsers);
 // 회원가입 승인 엔드포인트

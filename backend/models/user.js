@@ -9,8 +9,8 @@ const userSchema = new mongoose.Schema({
   isAdmin: { type: Boolean, default: false }, // 기본값 false
   status: {
     type: String,
-    enum: ["normal", "manager", "professor"], // 상태 값 단순화
-    default: "normal",
+    enum: ["user", "member", "executive", "superadmin"], // 상태 값 단순화
+    default: "user",
   },
   profileImage: { type: String, default: null }, // 프로필 이미지 URL
   achievements: { type: [String], default: [] }, // 업적
