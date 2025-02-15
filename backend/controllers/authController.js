@@ -23,8 +23,8 @@ exports.register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     console.log(hashedPassword);
 
-    // 유저 생성
-    const newUser = new tempUser({
+    // 유저 생성 // 나중에 tempUser로 바꾸기!
+    const newUser = new User({
       id,
       nickName,
       password: hashedPassword,
@@ -57,8 +57,8 @@ exports.login = async (req, res) => {
   const { id, password } = req.body;
   console.log("로그인 요청 도착:", req.body);
   try {
-    // 유저 확인
-    const user = await tempUser.findOne({ id });
+    // 유저 확인   // 나중에 tempUser가 아니라 User로 바꾸기!
+    const user = await User.findOne({ id });
     //onst user = await User.findOne({ id });
 
     if (!user) {
@@ -68,12 +68,16 @@ exports.login = async (req, res) => {
       return res.status(400).json({ error: "비밀번호가 잘못되었습니다." });
     }
     const token = jwt.sign(
-      { userId: user.id, userStatus: user.status },
+      { userId: user.id, userNickname: user.nickName, userStatus: user.status },
       process.env.JWT_SECRET,
       {
         expiresIn: "1h",
       }
     );
+
+    //토큰 전송 확인용 코드
+    //const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    //console.log("토큰 : ", decodedToken.userNickname);
 
     console.log("갓 발급한 토큰(authController_login):", token); // 로그 추가
     res.status(200).json({ token, userId: user.id });
@@ -198,5 +202,6 @@ exports.rejectUser = async (req, res) => {
 
 // 토큰 검증
 exports.verifyToken = (req, res) => {
-  res.status(200).json({ success: true, user: req.user });
+  console.log("verifyToken 실행됨, req.decoded:", req.decoded);
+  res.status(200).json({ success: true, user: req.decoded });
 };

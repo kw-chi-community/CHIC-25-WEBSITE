@@ -5,6 +5,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const authRoutes = require("./routes/authRoute"); // 인증 라우트 불러오기
 const userApprovalRoutes = require("./routes/userApprovalRoute");
+const postRoutes = require("./routes/postRoute");
+const replyRoutes = require("./routes/replyRoute");
 const db = require("./config/db"); // DB 연결 모듈 불러오기
 const app = express();
 const path = require("path"); // path 모듈 추가
@@ -17,8 +19,8 @@ app.use(cors()); // 모든 출처를 허용
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//app.use("/posts", postRoutes); // 게시글 라우트 추가
-//app.use("/replies", replyRoutes); // 댓글 라우트 추가
+app.use("/posts", postRoutes); // 게시글 라우트 추가
+app.use("/replies", replyRoutes); // 댓글 라우트 추가
 
 // // 뷰 엔진 설정
 // app.set("view engine", "ejs");

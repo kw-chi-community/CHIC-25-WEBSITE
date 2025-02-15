@@ -30,7 +30,7 @@ exports.getPostById = async (req, res) => {
 
 // 게시글 생성
 exports.createPost = async (req, res) => {
-  try {
+  try { 
     const { id, nickName, title, content, tags } = req.body;
     const newPost = new Post({
       postId: uuidv4(),

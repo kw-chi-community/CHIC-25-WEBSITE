@@ -28,12 +28,18 @@ module.exports = async (req, res, next) => {
   // JWT 토큰 검증
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findOne({ id: decoded.userId });
+    const user = await User.findOne({
+      id: decoded.userId,
+      //nickname: decoded.userNickname,
+      //status: decoded.userStatus,
+    });
+    //console.log("user는", user.id);
 
     if (!user) {
       return res.status(401).json({ message: "사용자를 찾을 수 없습니다." });
     }
 
+    req.decoded = decoded;
     req.user = user; // 요청 객체에 사용자 정보 추가
     next(); // 다음 미들웨어로 이동
   } catch (err) {
