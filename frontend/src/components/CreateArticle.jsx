@@ -49,6 +49,22 @@ const CreateArticle = () => {
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleContentChange = (e) => setContent(e.target.value);
 
+  const fetchPosts = async () => {
+    try {
+      const response = await fetch(`${address}/posts`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!response.ok) throw new Error("게시글 가져오기 실패");
+
+      const data = await response.json();
+      setPosts(data);
+    } catch (error) {
+      console.error("게시글 가져오기 오류:", error);
+    }
+  };
+
   const handleSubmit = async () => {
     if (title.trim() === "" || content.trim() === "") return;
     const data = {
@@ -73,6 +89,7 @@ const CreateArticle = () => {
       const newPost = await response.json();
       console.log("작성된 게시글:", newPost);
       handleCancel();
+      fetchPosts();
     } catch (error) {
       console.error("Error:", error);
     }
@@ -86,6 +103,7 @@ const CreateArticle = () => {
 
   useEffect(() => {
     checkAccessToken(setUserId, setUserNickname, setUserStatus);
+    fetchPosts();
   }, []);
 
   return (
