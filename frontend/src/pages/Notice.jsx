@@ -5,9 +5,18 @@ import "../styles/Notice.css";
 
 const Notice = () => {
   const address = process.env.REACT_APP_BACKEND_ADDRESS;
-  const checkAccessToken = async () => {
+
+  const [userId, setUserId] = useState(null);
+  const [userNickname, setUserNickname] = useState(null);
+  const [userStatus, setUserStatus] = useState(null);
+
+  const checkAccessToken = async (
+    setUserId,
+    setUserNickname,
+    setUserStatus
+  ) => {
     const token = localStorage.getItem("token");
-    console.log(token);
+    //console.log(token);
     if (!token) return; // 토큰이 없으면 검증하지 않음
     else {
       try {
@@ -22,20 +31,18 @@ const Notice = () => {
         console.log(result);
 
         if (result.success) {
-          console.log("ㅎㅇㅎㅇ");
-          //setUserId(result.user.userId);
-          //setUserNickname(result.user.userNickname);
+          setUserId(result.user.userId);
+          setUserNickname(result.user.userNickname);
+          setUserStatus(result.user.userStatus);
         }
       } catch (error) {
         console.error("토큰 검증 중 오류 발생:", error);
         localStorage.removeItem("token");
-        window.location.href = "/register";
       }
     }
   };
-
   useEffect(() => {
-    checkAccessToken();
+    checkAccessToken(setUserId, setUserNickname, setUserStatus);
   }, []);
 
   // 공지 전체 목록

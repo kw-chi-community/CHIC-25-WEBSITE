@@ -6,9 +6,9 @@ import "../styles/CreateArticle.css";
 
 const address = process.env.REACT_APP_BACKEND_ADDRESS;
 
-const checkAccessToken = async (setUserId, setUserNickname) => {
+const checkAccessToken = async (setUserId, setUserNickname, setUserStatus) => {
   const token = localStorage.getItem("token");
-  console.log(token);
+  //console.log(token);
   if (!token) return; // 토큰이 없으면 검증하지 않음
   else {
     try {
@@ -25,6 +25,7 @@ const checkAccessToken = async (setUserId, setUserNickname) => {
       if (result.success) {
         setUserId(result.user.userId);
         setUserNickname(result.user.userNickname);
+        setUserStatus(result.user.userStatus);
       }
     } catch (error) {
       console.error("토큰 검증 중 오류 발생:", error);
@@ -42,6 +43,7 @@ const CreateArticle = () => {
 
   const [userId, setUserId] = useState(null);
   const [userNickname, setUserNickname] = useState(null);
+  const [userStatus, setUserStatus] = useState(null);
 
   const handleEditClick = () => setIsEditing(true);
   const handleTitleChange = (e) => setTitle(e.target.value);
@@ -83,7 +85,7 @@ const CreateArticle = () => {
   };
 
   useEffect(() => {
-    checkAccessToken(setUserId, setUserNickname);
+    checkAccessToken(setUserId, setUserNickname, setUserStatus);
   }, []);
 
   return (
