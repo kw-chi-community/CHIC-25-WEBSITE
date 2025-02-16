@@ -45,7 +45,13 @@ const CreateArticle = () => {
   const [userNickname, setUserNickname] = useState(null);
   const [userStatus, setUserStatus] = useState(null);
 
-  const handleEditClick = () => setIsEditing(true);
+  const handleEditClick = () => {
+    if (!userStatus || userStatus === "user") {
+      alert("작성 권한이 없습니다.");
+      return;
+    }
+    setIsEditing(true);
+  };
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleContentChange = (e) => setContent(e.target.value);
 
