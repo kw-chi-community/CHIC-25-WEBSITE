@@ -114,6 +114,21 @@ exports.getUserInfo = async (req, res) => {
   }
 };
 
+// 모든 유저 목록 조회 (executive, superadmin만)
+exports.getAllUsers = async (req, res) => {
+  try {
+    if (req.user.status !== "executive" && req.user.status !== "superadmin") {
+      return res.status(403).json({ message: "권한이 없습니다." });
+    }
+
+    const users = await User.find().select("-password"); 
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: "유저 목록 조회 실패", error });
+  }
+};
+
+
 exports.checkHome = async (req, res) => {
   try {
     if (!req.user) {

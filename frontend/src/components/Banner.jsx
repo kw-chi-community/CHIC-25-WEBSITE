@@ -93,7 +93,6 @@ const Banner = () => {
               >
                 자유게시판
               </li>
-              <li>비밀게시판</li>
             </ul>
           </li>
           <li className="menu-item">
@@ -102,8 +101,45 @@ const Banner = () => {
               <li>지원하기</li>
             </ul>
           </li>
-          <li className="banner-login" onClick={() => navigate("/login")}>
-            LOGIN
+          {userStatus === "executive" || userStatus === "superadmin" ? (
+            <li className="menu-item">
+              MANAGE
+              <ul className="sub-menu">
+                <li
+                  onClick={() => navigate("/member")}
+                  style={{ cursor: "pointer" }}
+                >
+                  회원관리
+                </li>
+                <li
+                  onClick={() => navigate("/application")}
+                  style={{ cursor: "pointer" }}
+                >
+                  동아리신청관리
+                </li>
+              </ul>
+            </li>
+          ) : null}
+          <li
+            className="banner-login"
+            onClick={() => {
+              if (userId) {
+                // 로그아웃 처리
+                localStorage.removeItem("token");
+                localStorage.removeItem("userid");
+                setUserId(null);
+                setUserNickname(null);
+                setUserStatus(null);
+                navigate("/");
+
+                // 화면 리로드 (새로고침)
+                window.location.reload();
+              } else {
+                navigate("/login");
+              }
+            }}
+          >
+            {userId ? "LOGOUT" : "LOGIN"}
           </li>
         </ul>
       </nav>

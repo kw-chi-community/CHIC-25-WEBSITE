@@ -128,6 +128,7 @@ const Login = () => {
 
           <button type="submit">Login</button>
           <button
+            type="button"
             className="signup-button"
             onClick={() => navigate("/register")}
           >

@@ -10,6 +10,8 @@ import About from "./pages/About";
 import Organization from "./pages/Organization";
 import Location from "./pages/Location";
 import History from "./pages/History";
+import Member from "./pages/Member"; 
+import Application from "./pages/Application";
 
 const App = () => {
   return (
@@ -25,6 +27,8 @@ const App = () => {
         <Route path="/organization" element={<Organization />} />
         <Route path="/location" element={<Location />} />
         <Route path="/history" element={<History />} />
+        <Route path="/member" element={<Member />} />
+        <Route path="/application" element={<Application />} />
       </Routes>
     </Router>
   );

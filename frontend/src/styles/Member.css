@@ -1,0 +1,65 @@
+.member-container {
+    padding: 20px;
+    background-color: black;
+    color: #ffffff;
+    font-family: "Noto Sans KR", sans-serif;
+  }
+  
+  .member-title {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 24px;
+    color: #ffffff;
+    text-align: center;
+  }
+  
+  .member-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #1a1a1a;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 30px;
+   
+  }
+  
+  .member-table th,
+  .member-table td {
+    padding: 14px;
+    text-align: center;
+    color: #ffffff;
+    border-bottom: 1px solid #333; 
+  }
+  
+  .member-table th {
+    background-color: #2e2e2e;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  
+  .member-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .member-table tr:hover {
+    background-color: #292929; 
+    transition: background-color 0.3s ease;
+  }
+  
+  .member-table select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    background-color: #2e2e2e;
+    color: #ffffff;
+    border: none;
+    outline: none;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .member-table select:disabled {
+    background-color: #555;
+    color: #bbb;
+    cursor: not-allowed;
+  }
+  
