@@ -24,7 +24,7 @@ exports.register = async (req, res) => {
     console.log(hashedPassword);
 
     // 유저 생성 // 나중에 tempUser로 바꾸기!
-    const newUser = new User({
+    const newUser = new tempUser({
       id,
       nickName,
       password: hashedPassword,
@@ -121,13 +121,12 @@ exports.getAllUsers = async (req, res) => {
       return res.status(403).json({ message: "권한이 없습니다." });
     }
 
-    const users = await User.find().select("-password"); 
+    const users = await User.find().select("-password");
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: "유저 목록 조회 실패", error });
   }
 };
-
 
 exports.checkHome = async (req, res) => {
   try {
