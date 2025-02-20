@@ -42,29 +42,25 @@ router.get("/users", authMiddleware, authController.getAllUsers);
 
 // 유저 상태 변경 (superadmin만)
 router.patch("/users/:id/status", authMiddleware, async (req, res) => {
-    const { id } = req.params;
-    const { status } = req.body;
-  
-    try {
-      if (req.user.status !== "superadmin") {
-        return res.status(403).json({ message: "권한이 없습니다." });
-      }
-  
-      const user = await User.findOneAndUpdate(
-        { id },
-        { status },
-        { new: true }
-      );
-  
-      if (!user) {
-        return res.status(404).json({ message: "사용자를 찾을 수 없습니다." });
-      }
-  
-      res.status(200).json({ message: "상태 변경 성공", user });
-    } catch (error) {
-      res.status(500).json({ message: "상태 변경 실패", error });
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    if (req.user.status !== "executive" && req.user.status !== "superadmin") {
+      return res.status(403).json({ message: "권한이 없습니다." });
     }
-  });
+
+    const user = await User.findOneAndUpdate({ id }, { status }, { new: true });
+
+    if (!user) {
+      return res.status(404).json({ message: "사용자를 찾을 수 없습니다." });
+    }
+
+    res.status(200).json({ message: "상태 변경 성공", user });
+  } catch (error) {
+    res.status(500).json({ message: "상태 변경 실패", error });
+  }
+});
 
 // // 유저 정보 수정 엔드포인트
 // router.patch("/me", authMiddleware, authController.updateUserInfo);
