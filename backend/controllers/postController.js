@@ -31,7 +31,7 @@ exports.getPostById = async (req, res) => {
 // 게시글 생성
 exports.createPost = async (req, res) => {
   try { 
-    const { id, nickName, title, content, tags } = req.body;
+    const { id, nickName, title, content, tags, type } = req.body;
     const newPost = new Post({
       postId: uuidv4(),
       id,
@@ -39,6 +39,7 @@ exports.createPost = async (req, res) => {
       title,
       content,
       tags,
+      type,
       createdAt: new Date(),
     });
 

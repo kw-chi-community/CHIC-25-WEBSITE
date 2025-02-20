@@ -13,6 +13,13 @@ const postSchema = new mongoose.Schema({
   likes: { type: Number, default: 0 }, // 좋아요 수
   createdAt: { type: Date, required: true }, // 댓글 작성 시간
   updatedAt: { type: Date, default: null }, // 댓글 수정 시간
+
+  //공지사항 재활용을 위한 type
+  type: {
+    type: String,
+    enum: ["notice", "board"],
+    default: "board", 
+  },
 });
 
 // 게시글 모델 생성
