@@ -1,132 +1,195 @@
 /* 캘린더 컨테이너 */
 .calendar-container {
-    background-color: #ffffff;
-    color: black;
-    padding: 20px;
-    min-height: 100vh;
-    margin-top: 80px;
-    max-width: 1100px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  /* 캘린더 제목 */
-  .calendar-title {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: black;
-  }
-  
-  /* FullCalendar 스타일 */
-  .fc {
-    background: #ffffff;
-    border-radius: 10px;
-    padding: 10px;
-  }
-  
-  /* 헤더 (월 변경 바) */
-  .fc-toolbar {
-    background: black;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    border-radius: 5px;
-  }
-  
-  /* 월/연도 표시 */
-  .fc-toolbar-title {
-    font-size: 22px;
-    font-weight: bold;
-    color: white;
-    text-align: center;
-  }
-  
-  /* 좌우 이동 버튼 */
-  .fc-toolbar-chunk .fc-button {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 5px;
-  }
-  
-  .fc-toolbar-chunk .fc-button:hover {
-    color: #ccc;
-  }
-  
-  /* 요일 헤더 */
-  .fc-col-header-cell {
-    background: black;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    font-size: 16px;
-  }
-  
-  /* 날짜 칸 */
-  .fc-daygrid-day {
-    background: #ffffff;
-    color: black;
-    border: 1px solid #ddd;
-  }
-  
-  /* 오늘 날짜 강조 */
-  .fc-day-today {
-    background: rgba(0, 0, 0, 0.1);
-  }
-  
-  /* 일정 스타일 */
-  .fc-event {
-    background-color: black;
-    border: none;
-    color: white;
-    padding: 5px;
-    border-radius: 5px;
-    font-size: 14px;
-  }
-  
-  /* 하단 일정 목록 */
-  .event-list {
-    margin-top: 0; /* 캘린더와 자연스럽게 연결 */
-    padding: 15px;
-    background: white;
-    max-width: 1100px;
-    margin-left: auto;
-    margin-right: auto;
-    border-top: 1px solid #ddd; /* 캘린더와 구분선 */
-  }
-  
-  /* 일정 항목 */
-  .event-item {
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    color: black;
-    padding: 10px 0;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  /* 일정 날짜 */
-  .event-date {
-    font-weight: bold;
-    color: black;
-    margin-right: 10px;
-  }
-  
-  /* 일정 구분자 */
-  .event-separator {
-    margin-right: 10px;
-    color: #666;
-  }
-  
-  /* 일정 제목 */
-  .event-title {
-    color: black;
-    font-size: 16px;
-    margin-left: 10px;
-  }
-  
+  background-color: #ffffff;
+  color: black;
+  padding: 20px;
+  min-height: 100vh;
+  margin-top: 60px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* FullCalendar 스타일 */
+.fc {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+/* 캘린더 헤더 */
+.fc-toolbar {
+  background: #333;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.fc-toolbar-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+
+/* 요일 헤더 */
+.fc-col-header-cell {
+  background: #444;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.fc-daygrid-day {
+  background: #ffffff;
+  color: black;
+  border: 1px solid #ddd;
+  transition: 0.2s;
+}
+
+.fc-daygrid-day:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.fc-day-today {
+  background: rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+}
+
+/* 일정 스타일 */
+.fc-event {
+  background-color: #333;
+  border: none;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.fc-event:hover {
+  background-color: #555;
+}
+
+/* 일정 추가 버튼 */
+.add-event-button {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  width: 50px;
+  height: 50px;
+  background: #333;
+  color: white;
+  font-size: 24px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-event-button:hover {
+  background: #555;
+}
+
+/* 하단 일정 목록 */
+.event-list {
+  width: 100%;
+  margin-top: 20px;
+  padding: 15px;
+  background: white;
+  border-top: 1px solid #ddd;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.event-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 이벤트 정보 (제목과 날짜를 같은 줄에 배치) */
+.event-info {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  gap: 10px; /* 제목과 날짜 사이 간격 */
+  justify-content: flex-start;
+}
+
+/* 이벤트 제목 */
+.event-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* 날짜 스타일 (제목 바로 옆에 위치) */
+.event-date {
+  font-weight: bold;
+  color: black;
+  white-space: nowrap;
+  margin-left: 8px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* 삭제 버튼 */
+.event-delete-btn {
+  background: #333;
+  color: white;
+  font-size: 14px;
+  border: none;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 30px;
+  margin-bottom: 10px;
+}
+
+/* 수정 버튼 */
+.event-edit-icon {
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+  opacity: 0.7;
+  margin-left: 5px;
+}
+
+.event-edit-icon:hover {
+  color: #555;
+  opacity: 1;
+}
