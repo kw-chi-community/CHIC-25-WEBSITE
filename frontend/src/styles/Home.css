@@ -7,7 +7,6 @@
   background-color: black;
   color: white;
   text-align: center;
-  padding-bottom: 10%;
 }
 
 .home-content h1 {
@@ -83,7 +82,7 @@
 /* RECRUIT 버튼 스타일 */
 .recruit-button {
   position: fixed;
-  bottom: 5%;
+  bottom: 8%;
   left: 50%;
   transform: translateX(-50%);
   width: 150px;
@@ -152,4 +151,31 @@
 
 .popup-content button:hover {
   background-color: #5e6eca;
+}
+
+.slider-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.slider {
+  display: flex;
+  width: max-content;
+  animation: slide 30s linear infinite;
+}
+
+.slider-image {
+  width: 200px;
+  height: auto;
+  margin-right: 1rem;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }

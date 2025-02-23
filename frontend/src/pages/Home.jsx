@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Banner from "../components/Banner";
 import Icons from "../components/Icons";
@@ -66,6 +66,44 @@ const Home = () => {
     }
   };
 
+  const [images, setImages] = useState([]);
+  const sliderRef = useRef(null);
+  const animationRef = useRef(null);
+
+  useEffect(() => {
+    // 이미지 경로를 생성
+    const imagePaths = Array.from({ length: 11 }, (_, i) =>
+      require(`../assets/img/${i + 1}.jpg`)
+    );
+    setImages(imagePaths);
+
+    // 슬라이더 애니메이션 시작
+    startAnimation();
+
+    return () => {
+      // 컴포넌트 언마운트 시 애니메이션 정지
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, []);
+
+  const startAnimation = () => {
+    const slider = sliderRef.current;
+    let position = 0;
+
+    const animate = () => {
+      position -= 1; // 이동 속도 조절
+      if (position <= -slider.scrollWidth / 2) {
+        position = 0;
+      }
+      slider.style.transform = `translateX(${position}px)`;
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    animationRef.current = requestAnimationFrame(animate);
+  };
+
   return (
     <div>
       <Banner />
@@ -113,6 +151,27 @@ const Home = () => {
           </div>
         </div>
       )}
+      <div className="slider-container">
+        <div className="slider" ref={sliderRef}>
+          {images.map((image, index) => (
+            <img
+              key={index}
+              src={image}
+              alt={`Slide ${index + 1}`}
+              className="slider-image"
+            />
+          ))}
+          {/* 이미지를 반복하여 순환 효과를 만듦 */}
+          {images.map((image, index) => (
+            <img
+              key={`dup-${index}`}
+              src={image}
+              alt={`Slide ${index + 1}`}
+              className="slider-image"
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
