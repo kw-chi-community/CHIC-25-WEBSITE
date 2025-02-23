@@ -61,10 +61,30 @@ const Banner = () => {
           <li className="menu-item">
             CHICLY
             <ul className="sub-menu">
-              <li onClick={() => navigate("/about")}>소개</li>
-              <li onClick={() => navigate("/organization")}>조직도</li>
-              <li onClick={() => navigate("/location")}>오시는 길</li>
-              <li onClick={() => navigate("/history")}>연혁</li>
+              <li
+                onClick={() => navigate("/about")}
+                style={{ cursor: "pointer" }}
+              >
+                소개
+              </li>
+              <li
+                onClick={() => navigate("/activity")}
+                style={{ cursor: "pointer" }}
+              >
+                활동
+              </li>
+              <li
+                onClick={() => navigate("/organization")}
+                style={{ cursor: "pointer" }}
+              >
+                조직도
+              </li>
+              <li
+                onClick={() => navigate("/history")}
+                style={{ cursor: "pointer" }}
+              >
+                연혁
+              </li>
             </ul>
           </li>
           <li className="menu-item">
@@ -95,12 +115,12 @@ const Banner = () => {
               </li>
             </ul>
           </li>
-          <li className="menu-item">
+          {/* <li className="menu-item">
             RECRUIT
             <ul className="sub-menu">
               <li>지원하기</li>
             </ul>
-          </li>
+          </li> */}
           {userStatus === "executive" || userStatus === "superadmin" ? (
             <li className="menu-item">
               MANAGE

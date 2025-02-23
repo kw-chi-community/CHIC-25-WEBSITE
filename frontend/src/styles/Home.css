@@ -7,6 +7,7 @@
   background-color: black;
   color: white;
   text-align: center;
+  padding-bottom: 10%;
 }
 
 .home-content h1 {
@@ -25,7 +26,7 @@
   align-items: center;
   justify-content: center;
   position: absolute;
-  bottom: 50px; 
+  bottom: 50px;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -68,4 +69,87 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes fadeIn2 {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* RECRUIT 버튼 스타일 */
+.recruit-button {
+  position: fixed;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  max-width: 90%;
+  padding: 15px 30px;
+  background-color: #5e6eca;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  animation: fadeIn2 0.5s ease-in;
+}
+
+.recruit-button:hover {
+  background-color: #5e6eca;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+  transform: translateX(-50%) scale(1.05);
+}
+
+.recruit-button:active {
+  transform: translateX(-50%) scale(0.95);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* 팝업 메시지 스타일 */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  color: black;
+}
+
+.popup-content p {
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+
+.popup-content button {
+  padding: 10px 20px;
+  background-color: #5e6eca;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.popup-content button:hover {
+  background-color: #5e6eca;
 }

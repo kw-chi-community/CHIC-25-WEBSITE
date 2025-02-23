@@ -92,15 +92,6 @@ const About = () => {
           </p>
         </section>
 
-        <section className="about-section">
-          <h2>😀CHIC의 활동</h2>
-          <p>
-            <strong>스터디:</strong> 전공과 관련한 다양한 분야의 스터디를
-            진행합니다. 팀원들과 협력하며 지식을 공유하고 성장할 수 있는 학습
-            기회를 얻을 수 있습니다.
-          </p>
-        </section>
-
         <img
           src="/assets/about-image.jpg"
           alt="동아리 활동 사진"
