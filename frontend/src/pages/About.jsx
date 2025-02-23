@@ -91,12 +91,6 @@ const About = () => {
             만드는 것이 목표입니다.
           </p>
         </section>
-
-        <img
-          src="/assets/about-image.jpg"
-          alt="동아리 활동 사진"
-          className="about-image"
-        />
       </div>
     </>
   );
