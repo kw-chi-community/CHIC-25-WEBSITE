@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Banner from "../components/Banner";
 import Icons from "../components/Icons";
 import kwLogo from "../assets/kwLogo.png";
 import "../styles/Home.css";
 
-const text1 = "CHICLY, 치크를 더 치크답게";
+const text1 = "CHICLY, 시크를 더 시크답게";
 const text2 = "INFORMATION CONVERGENCE";
 
 const Home = () => {
@@ -48,6 +49,23 @@ const Home = () => {
   useEffect(() => {
     checkAccessToken(setUserId, setUserNickname, setUserStatus);
   }, []);
+
+  const navigate = useNavigate();
+  const [showPopup, setShowPopup] = useState(false);
+
+  const recruitmentStart = new Date("2025-01-31");
+  const recruitmentEnd = new Date("2025-02-12");
+  const currentDate = new Date();
+
+  const handleRecruitClick = () => {
+    // 현재 날짜가 모집 기간인지 확인
+    if (currentDate >= recruitmentStart && currentDate <= recruitmentEnd) {
+      navigate("/recruit"); // Recruit.jsx로 이동
+    } else {
+      setShowPopup(true); // 팝업 메시지 표시
+    }
+  };
+
   return (
     <div>
       <Banner />
@@ -83,6 +101,18 @@ const Home = () => {
           <span>KWANGWOON UNIVERSITY</span>
         </div>
       </main>
+      <button className="recruit-button" onClick={handleRecruitClick}>
+        RECRUIT
+      </button>
+      {/* 팝업 메시지 */}
+      {showPopup && (
+        <div className="popup">
+          <div className="popup-content">
+            <p>현재 신규회원 모집기간이 아닙니다.</p>
+            <button onClick={() => setShowPopup(false)}>닫기</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
