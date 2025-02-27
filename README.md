@@ -7,3 +7,7 @@
 ## 기술 스택
 - **FE** : React.js
 - **BE** : Node.js
+
+## 실행 방법
+- **FE** : ./frontend 에서 npm run start
+- **BE** : ./backend에서 npm start
