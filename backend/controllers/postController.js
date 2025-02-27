@@ -6,7 +6,8 @@ const { v4: uuidv4 } = require("uuid");
 // 모든 게시글 조회
 exports.getPosts = async (req, res) => {
   try {
-    const posts = await Post.find().sort({ createdAt: -1 });
+    const posttype = req.query.type ? { type: req.query.type } : {};
+    const posts = await Post.find(posttype).sort({ createdAt: -1 });
     res.status(200).json(posts);
   } catch (error) {
     res.status(500).json({ message: "게시글 조회 실패" });
@@ -30,7 +31,7 @@ exports.getPostById = async (req, res) => {
 
 // 게시글 생성
 exports.createPost = async (req, res) => {
-  try { 
+  try {
     const { id, nickName, title, content, tags, type } = req.body;
     const newPost = new Post({
       postId: uuidv4(),

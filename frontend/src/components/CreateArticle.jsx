@@ -57,7 +57,7 @@ const CreateArticle = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch(`${address}/posts`, {
+      const response = await fetch(`${address}/posts?type=board`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
@@ -79,9 +79,10 @@ const CreateArticle = () => {
       title,
       content,
       tags: [],
+      type: "board",
     };
     try {
-      const response = await fetch(`${address}/posts`, {
+      const response = await fetch(`${address}/posts?type=board`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
