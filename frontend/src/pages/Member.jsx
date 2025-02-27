@@ -112,17 +112,16 @@ const Member = () => {
               <td>
                 <select
                   value={user.status}
-                  onChange={(e) =>
-                    handleStatusChange(user.id, e.target.value)
-                  }
+                  onChange={(e) => handleStatusChange(user.id, e.target.value)}
                   disabled={
-                    currentUserStatus !== "superadmin" || currentUserId === user.id
+                    currentUserStatus !== "superadmin" ||
+                    currentUserId === user.id
                   }
                 >
-                  <option value="user">user</option>
-                  <option value="member">member</option>
-                  <option value="executive">executive</option>
-                  <option value="superadmin">superadmin</option>
+                  <option value="user">일반회원</option>
+                  <option value="member">동아리원</option>
+                  <option value="executive">임원</option>
+                  <option value="superadmin">관리자</option>
                 </select>
               </td>
             </tr>
