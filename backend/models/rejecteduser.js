@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const rejecteduserSchema = new mongoose.Schema({
   id: { type: String, required: true, unique: true },
-  password: { type: String, required: true }, // 해시 형태로 저장
+  //password: { type: String, required: true }, // 해시 형태로 저장
   nickName: { type: String, required: true, unique: true },
   isAdmin: { type: Boolean, default: false }, // 기본값 false
   status: {

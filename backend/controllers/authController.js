@@ -128,6 +128,20 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
+// 회원가입 신청 유저 목록 조회 (executive, superadmin만)
+exports.getTempUsers = async (req, res) => {
+  try {
+    if (req.user.status !== "executive" && req.user.status !== "superadmin") {
+      return res.status(403).json({ message: "권한이 없습니다." });
+    }
+
+    const users = await tempUser.find().select("-password");
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: "유저 목록 조회 실패", error });
+  }
+};
+
 exports.checkHome = async (req, res) => {
   try {
     if (!req.user) {
@@ -150,6 +164,7 @@ exports.logout = (req, res) => {
   res.status(200).json({ message: "로그아웃되었습니다." });
 };
 
+/*
 // 대기 사용자 불러오기 ( FE 작업에 따라 수정 예상 )
 exports.getTempUsers = async (req, res) => {
   try {
@@ -159,28 +174,29 @@ exports.getTempUsers = async (req, res) => {
     res.status(500).json({ message: "서버 오류가 발생했습니다(조회)." });
   }
 };
+*/
 
 // 대기 사용자 승인
 exports.approveUser = async (req, res) => {
   try {
     const { id } = req.body;
-    const tempUser = await tempUser.findOne({ id });
+    const tempusers = await tempUser.findOne({ id });
 
-    if (!tempUser) {
+    if (!tempusers) {
       return res
         .status(404)
         .json({ message: "대기 중인 사용자를 찾을 수 없습니다." });
     }
 
     const newUser = new User({
-      id: tempUser.id,
-      nickName: tempUser.nickName,
-      password: tempUser.password, // 이미 해시된 비밀번호
+      id: tempusers.id,
+      nickName: tempusers.nickName,
+      password: tempusers.password, // 이미 해시된 비밀번호
     });
     await newUser.save();
 
     // tempUser에서 삭제
-    await tempUser.deleteOne({ id });
+    await tempusers.deleteOne({ id });
     res.status(200).json({ message: "사용자가 승인되었습니다." });
   } catch (error) {
     res.status(500).json({ message: "서버 오류가 발생했습니다(승인)." });
@@ -191,23 +207,24 @@ exports.approveUser = async (req, res) => {
 exports.rejectUser = async (req, res) => {
   try {
     const { id } = req.body;
-    const tempUser = await tempUser.findOne({ id });
+    const tempusers = await tempUser.findOne({ id });
+    //console.log(tempusers);
 
-    if (!tempUser) {
+    if (!tempusers) {
       return res
         .status(404)
         .json({ message: "대기 중인 사용자를 찾을 수 없습니다." });
     }
 
     const rejectednewUser = new rejectedUser({
-      id: tempUser.id,
-      nickName: tempUser.nickName,
-      reason,
+      id: tempusers.id,
+      nickName: tempusers.nickName,
+      //reason,
     });
     await rejectednewUser.save();
 
     // tempUser에서 삭제
-    await tempUser.deleteOne({ id });
+    await tempusers.deleteOne({ id });
     res.status(200).json({ message: "사용자가 거절되었습니다." });
   } catch (error) {
     res.status(500).json({ message: "서버 오류가 발생했습니다(거절)." });
