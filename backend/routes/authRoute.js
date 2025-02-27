@@ -30,15 +30,17 @@ router.get("/verify", authMiddleware, authController.verifyToken);
 // 회원가입 대기 엔드포인트
 router.get("/get-temp-users", authController.getTempUsers);
 // 회원가입 승인 엔드포인트
-router.get("/approve", authController.approveUser);
+router.patch("/approve", authMiddleware, authController.approveUser);
 // 회원가입 거절 엔드포인트
-router.get("/reject", authController.rejectUser);
+router.patch("/reject", authMiddleware, authController.rejectUser);
 
 // 유저 정보 조회 엔드포인트(토큰 필요)
 router.get("/me", authMiddleware, authController.getUserInfo);
 
 // 모든 유저 목록 조회 엔드포인트 (executive, superadmin만 접근 가능)
 router.get("/users", authMiddleware, authController.getAllUsers);
+// 모든 유저 목록 조회 엔드포인트 (executive, superadmin만 접근 가능)
+router.get("/tempusers", authMiddleware, authController.getTempUsers);
 
 // 유저 상태 변경 (superadmin만)
 router.patch("/users/:id/status", authMiddleware, async (req, res) => {
