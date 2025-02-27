@@ -9,6 +9,10 @@ const Recruit = () => {
   const [userId, setUserId] = useState(null);
   const [userNickname, setUserNickname] = useState(null);
   const [userStatus, setUserStatus] = useState(null);
+  const [missingFields, setMissingFields] = useState(null);
+  const [showPopup, setShowPopup] = useState(null);
+  //const [navigate, setNavigate] = useState(null);
+  const navigate = useNavigate();
 
   const checkAccessToken = async (
     setUserId,
