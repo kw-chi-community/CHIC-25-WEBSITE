@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Banner from "../components/Banner";
 import "../styles/Activity.css";
-
+import ReactGA4 from "react-ga4";
 const Activity = () => {
+  const location = useLocation();
   const address = process.env.REACT_APP_BACKEND_ADDRESS;
 
   const [userId, setUserId] = useState(null);
@@ -43,7 +44,12 @@ const Activity = () => {
   };
   useEffect(() => {
     checkAccessToken(setUserId, setUserNickname, setUserStatus);
-  }, []);
+    ReactGA4.send({
+      hitType: "pageview",
+      page: location.pathname + location.search,
+      title: "Activity",
+    });
+  }, [location]);
 
   const [activeTab, setActiveTab] = useState("study");
 

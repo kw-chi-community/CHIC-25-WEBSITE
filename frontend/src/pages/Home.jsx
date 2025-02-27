@@ -1,14 +1,16 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Banner from "../components/Banner";
 import Icons from "../components/Icons";
 import kwLogo from "../assets/kwLogo.png";
 import "../styles/Home.css";
+import ReactGA4 from "react-ga4";
 
 const text1 = "CHICLY, 시크를 더 시크답게";
 const text2 = "INFORMATION CONVERGENCE";
 
 const Home = () => {
+  const location = useLocation();
   const address = process.env.REACT_APP_BACKEND_ADDRESS;
 
   const [userId, setUserId] = useState(null);
@@ -48,6 +50,11 @@ const Home = () => {
   };
   useEffect(() => {
     checkAccessToken(setUserId, setUserNickname, setUserStatus);
+    ReactGA4.send({
+      hitType: "pageview",
+      page: location.pathname + location.search,
+      title: "Home",
+    });
   }, []);
 
   const navigate = useNavigate();
