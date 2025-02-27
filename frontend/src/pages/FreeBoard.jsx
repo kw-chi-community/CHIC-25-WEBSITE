@@ -3,8 +3,11 @@ import Banner from "../components/Banner";
 import Icons from "../components/Icons";
 import "../styles/FreeBoard.css";
 import CreateArticle from "../components/CreateArticle";
+import ReactGA4 from "react-ga4";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const FreeBoard = () => {
+  const location = useLocation();
   const address = process.env.REACT_APP_BACKEND_ADDRESS;
 
   const [userId, setUserId] = useState(null);
@@ -41,7 +44,12 @@ const FreeBoard = () => {
   };
   useEffect(() => {
     checkAccessToken(setUserId, setUserNickname, setUserStatus);
-  }, []);
+    ReactGA4.send({
+      hitType: "pageview",
+      page: location.pathname + location.search,
+      title: "FreeBoard",
+    });
+  }, [location]);
 
   return (
     <div className="free-board">

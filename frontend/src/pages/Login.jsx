@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Banner from "../components/Banner";
 import "../styles/Login.css";
+import ReactGA4 from "react-ga4";
 
 const Login = () => {
+  const location = useLocation();
   const address = process.env.REACT_APP_BACKEND_ADDRESS;
   const checkAccessToken = async () => {
     const token = localStorage.getItem("token");
@@ -37,6 +39,11 @@ const Login = () => {
 
   useEffect(() => {
     checkAccessToken();
+    ReactGA4.send({
+      hitType: "pageview",
+      page: location.pathname + location.search,
+      title: "Login",
+    });
   }, []);
 
   const navigate = useNavigate();

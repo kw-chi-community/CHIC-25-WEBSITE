@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Banner from "../components/Banner";
 import "../styles/Register.css";
+import ReactGA4 from "react-ga4";
 
 const Register = () => {
+  const location = useLocation();
   const address = process.env.REACT_APP_BACKEND_ADDRESS;
   const checkAccessToken = async () => {
     const token = localStorage.getItem("token");
@@ -37,7 +39,12 @@ const Register = () => {
 
   useEffect(() => {
     checkAccessToken();
-  }, []);
+    ReactGA4.send({
+      hitType: "pageview",
+      page: location.pathname + location.search,
+      title: "Register",
+    });
+  }, [location]);
 
   const navigate = useNavigate();
   const [formData, setFormData] = useState({

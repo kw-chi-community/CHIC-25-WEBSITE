@@ -13,7 +13,8 @@ import History from "./pages/History";
 import Member from "./pages/Member";
 import Application from "./pages/Application";
 import Recruit from "./pages/Recruit";
-
+import ReactGA4 from "react-ga4";
+ReactGA4.initialize("GTM-KCNC6ZCG");
 const App = () => {
   return (
     <Router>

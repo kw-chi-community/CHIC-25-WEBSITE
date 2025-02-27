@@ -5,8 +5,11 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import Banner from "../components/Banner";
 import Icons from "../components/Icons";
 import "../styles/Calendar.css";
+import ReactGA4 from "react-ga4";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Calendar = () => {
+  const location = useLocation();
   const address = process.env.REACT_APP_BACKEND_ADDRESS;
 
   const [userId, setUserId] = useState(null);
@@ -60,7 +63,12 @@ const Calendar = () => {
 
     checkAccessToken();
     fetchEvents();
-  }, [address]);
+    ReactGA4.send({
+      hitType: "pageview",
+      page: location.pathname + location.search,
+      title: "Calendar",
+    });
+  }, [address, location]);
 
   const handleDeleteEvent = async (eventId) => {
     const token = localStorage.getItem("token");
@@ -81,12 +89,22 @@ const Calendar = () => {
     const token = localStorage.getItem("token");
     try {
       const method = isEditing ? "PUT" : "POST";
-      const url = isEditing ? `${address}/calendar/${currentEventId}` : `${address}/calendar`;
+      const url = isEditing
+        ? `${address}/calendar/${currentEventId}`
+        : `${address}/calendar`;
 
-      const eventData = { userId, userNickname, title: newTitle, date: newDate };
+      const eventData = {
+        userId,
+        userNickname,
+        title: newTitle,
+        date: newDate,
+      };
       const response = await fetch(url, {
         method,
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(eventData),
       });
       if (!response.ok) throw new Error("이벤트 저장 실패");
@@ -111,39 +129,58 @@ const Calendar = () => {
         <FullCalendar
           plugins={[dayGridPlugin]}
           initialView="dayGridMonth"
-          events={Array.isArray(events) ? events.map((event) => ({ title: event.title, date: event.date })) : []}
+          events={
+            Array.isArray(events)
+              ? events.map((event) => ({
+                  title: event.title,
+                  date: event.date,
+                }))
+              : []
+          }
           headerToolbar={{ left: "prev", center: "title", right: "next" }}
           titleFormat={{ year: "numeric", month: "2-digit" }}
           height="auto"
         />
 
         <ul className="event-list">
-          {Array.isArray(events) && events.map((event) => (
-            <li key={event.eventId} className="event-item">
-              <div className="event-info">
-                <h3 className="event-title">{event.title}</h3>
-                {(userStatus === "superadmin" || userStatus === "executive") && (
-                  <FaEdit className="event-edit-icon" onClick={() => {
-                    setNewTitle(event.title);
-                    setNewDate(event.date);
-                    setCurrentEventId(event.eventId);
-                    setIsEditing(true);
-                    setShowModal(true);
-                  }} />
+          {Array.isArray(events) &&
+            events.map((event) => (
+              <li key={event.eventId} className="event-item">
+                <div className="event-info">
+                  <h3 className="event-title">{event.title}</h3>
+                  {(userStatus === "superadmin" ||
+                    userStatus === "executive") && (
+                    <FaEdit
+                      className="event-edit-icon"
+                      onClick={() => {
+                        setNewTitle(event.title);
+                        setNewDate(event.date);
+                        setCurrentEventId(event.eventId);
+                        setIsEditing(true);
+                        setShowModal(true);
+                      }}
+                    />
+                  )}
+                </div>
+                <p className="event-date">날짜: {event.date}</p>
+                {(userStatus === "superadmin" ||
+                  userStatus === "executive") && (
+                  <button
+                    className="event-delete-btn"
+                    onClick={() => handleDeleteEvent(event.eventId)}
+                  >
+                    <FaTimes />
+                  </button>
                 )}
-              </div>
-              <p className="event-date">날짜: {event.date}</p>
-              {(userStatus === "superadmin" || userStatus === "executive") && (
-                <button className="event-delete-btn" onClick={() => handleDeleteEvent(event.eventId)}>
-                  <FaTimes />
-                </button>
-              )}
-            </li>
-          ))}
+              </li>
+            ))}
         </ul>
 
         {(userStatus === "executive" || userStatus === "superadmin") && (
-          <button className="add-event-button" onClick={() => setShowModal(true)}>
+          <button
+            className="add-event-button"
+            onClick={() => setShowModal(true)}
+          >
             <FaPlus />
           </button>
         )}
@@ -153,10 +190,21 @@ const Calendar = () => {
         <div className="modal-overlay">
           <div className="modal-content">
             <h3>{isEditing ? "이벤트 수정" : "이벤트 추가"}</h3>
-            <input type="text" placeholder="이벤트 제목" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} />
-            <input type="date" value={newDate} onChange={(e) => setNewDate(e.target.value)} />
+            <input
+              type="text"
+              placeholder="이벤트 제목"
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+            />
+            <input
+              type="date"
+              value={newDate}
+              onChange={(e) => setNewDate(e.target.value)}
+            />
             <div className="modal-buttons">
-              <button onClick={handleCreateEvent}>{isEditing ? "수정" : "등록"}</button>
+              <button onClick={handleCreateEvent}>
+                {isEditing ? "수정" : "등록"}
+              </button>
               <button onClick={() => setShowModal(false)}>취소</button>
             </div>
           </div>

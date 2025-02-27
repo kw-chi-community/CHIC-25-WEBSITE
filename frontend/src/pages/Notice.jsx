@@ -3,8 +3,11 @@ import { FaPlus, FaTimes, FaEdit } from "react-icons/fa";
 import Banner from "../components/Banner";
 import Icons from "../components/Icons";
 import "../styles/Notice.css";
+import ReactGA4 from "react-ga4";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Notice = () => {
+  const location = useLocation();
   const address = process.env.REACT_APP_BACKEND_ADDRESS;
 
   const [userId, setUserId] = useState(null);
@@ -113,7 +116,9 @@ const Notice = () => {
       setNewContent("");
       setIsEditing(false);
       setCurrentNoticeId(null);
-      alert(isEditing ? "공지사항이 수정되었습니다." : "공지사항이 등록되었습니다.");
+      alert(
+        isEditing ? "공지사항이 수정되었습니다." : "공지사항이 등록되었습니다."
+      );
       fetchNotices();
     } catch (error) {
       console.error("공지사항 작성 중 오류:", error);
@@ -132,7 +137,12 @@ const Notice = () => {
   useEffect(() => {
     checkAccessToken();
     fetchNotices();
-  }, []);
+    ReactGA4.send({
+      hitType: "pageview",
+      page: location.pathname + location.search,
+      title: "Notice",
+    });
+  }, [location]);
 
   useEffect(() => {
     const filtered = notices.filter((notice) =>
@@ -185,7 +195,8 @@ const Notice = () => {
 
               <div style={{ display: "flex", alignItems: "center" }}>
                 <h3 className="notice-title">{notice.title}</h3>
-                {(userStatus === "superadmin" || userStatus === "executive") && (
+                {(userStatus === "superadmin" ||
+                  userStatus === "executive") && (
                   <FaEdit
                     className="notice-edit-icon"
                     onClick={() => openEditModal(notice)}
