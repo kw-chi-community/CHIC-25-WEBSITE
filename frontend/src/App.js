@@ -30,7 +30,10 @@ const App = () => {
         <Route path="/history" element={<History />} />
         <Route path="/member" element={<Member />} />
         <Route path="/application" element={<Application />} />
-        <Route path="/recruit" element={<Recruit />} />
+        <Route
+          path={process.env.REACT_APP_RECRUIT_PATH}
+          element={<Recruit />}
+        />
       </Routes>
     </Router>
   );
