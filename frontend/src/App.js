@@ -13,8 +13,10 @@ import History from "./pages/History";
 import Member from "./pages/Member";
 import Application from "./pages/Application";
 import Recruit from "./pages/Recruit";
+
 import ReactGA4 from "react-ga4";
 ReactGA4.initialize("GTM-KCNC6ZCG");
+
 const App = () => {
   return (
     <Router>
@@ -25,6 +27,7 @@ const App = () => {
         <Route path="/notice" element={<Notice />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/freeboard" element={<FreeBoard />} />
+        <Route path="/freeboard/:postId" element={<FreeBoard />} />
         <Route path="/about" element={<About />} />
         <Route path="/organization" element={<Organization />} />
         <Route path="/activity" element={<Activity />} />
@@ -35,6 +38,7 @@ const App = () => {
           path={process.env.REACT_APP_RECRUIT_PATH}
           element={<Recruit />}
         />
+        <Route path="/recruit" element={<Recruit />} />
       </Routes>
     </Router>
   );

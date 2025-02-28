@@ -65,7 +65,6 @@
   color: #333;
 }
 
-/* 좌측 하단 이미지 버튼 */
 .image-icon {
   font-size: 18px;
   color: #999;
@@ -77,7 +76,6 @@
   color: #333;
 }
 
-/* 우측 하단 체크 버튼 */
 .submit-icon.bottom-right {
   font-size: 18px;
   color: #999;
@@ -89,7 +87,6 @@
   color: #333;
 }
 
-/* 하단 영역(이미지 + 체크버튼 배치) */
 .bottom-area {
   display: flex;
   justify-content: space-between;
@@ -97,7 +94,6 @@
   margin-top: 10px;
 }
 
-/* 게시글 목록 스타일 */
 .post-list {
   margin-top: 20px;
   margin-left: 100px;
@@ -110,6 +106,7 @@
   background-color: #f5f5f5;
   border: 2px solid #666;
   border-radius: 4px;
+  position: relative;
 }
 
 .post-item strong {
@@ -124,7 +121,6 @@
   line-height: 1.5;
 }
 
-/* 기존 post-list와 post-item 스타일 유지 + 아래만 추가 */
 .post-title {
   font-size: 18px;
   color: #333;
@@ -187,4 +183,14 @@
   font-size: 14px;
   color: #666;
   margin-top: 8px;
+}
+
+.delete-icon {
+  color: black;
+  cursor: pointer;
+  font-size: 16px;
+  position: absolute;
+  top: 10px;
+  z-index: 20;
+  right: 10px;
 }

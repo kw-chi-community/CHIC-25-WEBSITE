@@ -1,59 +1,50 @@
 import React, { useState, useEffect } from "react";
-import { FaHeart, FaComment, FaStar } from "react-icons/fa";
-import { FaPencilAlt, FaCheck, FaImage } from "react-icons/fa";
+import {
+  FaHeart,
+  FaComment,
+  FaPencilAlt,
+  FaCheck,
+  FaImage,
+} from "react-icons/fa";
 import { AiOutlineClose } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 import "../styles/CreateArticle.css";
+import ReplySection from "../components/ReplySection";
 
 const address = process.env.REACT_APP_BACKEND_ADDRESS;
 
-const checkAccessToken = async (setUserId, setUserNickname, setUserStatus) => {
-  const token = localStorage.getItem("token");
-  //console.log(token);
-  if (!token) return; // 토큰이 없으면 검증하지 않음
-  else {
-    try {
-      const response = await fetch(`${address}/verify`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`, // Bearer 형식으로 토큰 전송
-        },
-      });
-
-      const result = await response.json();
-      console.log(result);
-
-      if (result.success) {
-        setUserId(result.user.userId);
-        setUserNickname(result.user.userNickname);
-        setUserStatus(result.user.userStatus);
-      }
-    } catch (error) {
-      console.error("토큰 검증 중 오류 발생:", error);
-      localStorage.removeItem("token");
-      window.location.href = "/freeboard";
-    }
-  }
-};
-
-const CreateArticle = () => {
+const CreateArticle = ({ selectedPostId, setSelectedPostId }) => {
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [posts, setPosts] = useState([]);
-
   const [userId, setUserId] = useState(null);
   const [userNickname, setUserNickname] = useState(null);
   const [userStatus, setUserStatus] = useState(null);
 
-  const handleEditClick = () => {
-    if (!userStatus || userStatus === "user") {
-      alert("작성 권한이 없습니다.");
-      return;
+  const checkAccessToken = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    try {
+      const response = await fetch(`${address}/verify`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        setUserId(result.user.userId);
+        setUserNickname(result.user.userNickname);
+        setUserStatus(result.user.userStatus);
+      } else {
+        localStorage.removeItem("token");
+      }
+    } catch (error) {
+      localStorage.removeItem("token");
     }
-    setIsEditing(true);
   };
-  const handleTitleChange = (e) => setTitle(e.target.value);
-  const handleContentChange = (e) => setContent(e.target.value);
 
   const fetchPosts = async () => {
     try {
@@ -67,8 +58,38 @@ const CreateArticle = () => {
       const data = await response.json();
       setPosts(data);
     } catch (error) {
-      console.error("게시글 가져오기 오류:", error);
+      console.error("게시글 불러오기 오류:", error);
     }
+  };
+
+  const handleViewComments = (postId) => {
+    setSelectedPostId(postId);
+    navigate(`/freeboard/${postId}`);
+  };
+
+  const handleDelete = async (postId, postUserId) => {
+    if (userId !== postUserId) {
+      alert("본인이 작성한 글만 삭제할 수 있습니다.");
+      return;
+    }
+
+    if (!window.confirm("정말 삭제하시겠습니까?")) return;
+
+    try {
+      const response = await fetch(`${address}/posts/${postId}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) throw new Error("게시글 삭제 실패");
+      fetchPosts();
+    } catch (error) {
+      console.error("게시글 삭제 오류:", error);
+    }
+  };
+
+  const handleCancel = () => {
+    setTitle("");
+    setContent("");
+    setIsEditing(false);
   };
 
   const handleSubmit = async () => {
@@ -81,95 +102,118 @@ const CreateArticle = () => {
       tags: [],
       type: "board",
     };
+
     try {
       const response = await fetch(`${address}/posts?type=board`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) {
-        throw new Error("게시글 작성 실패");
-      }
-      const newPost = await response.json();
-      console.log("작성된 게시글:", newPost);
+      if (!response.ok) throw new Error("게시글 작성 실패");
+
       handleCancel();
       fetchPosts();
     } catch (error) {
-      console.error("Error:", error);
+      console.error("게시글 작성 오류:", error);
     }
   };
 
-  const handleCancel = () => {
-    setTitle("");
-    setContent("");
-    setIsEditing(false);
+  const handleTitleChange = (e) => setTitle(e.target.value);
+  const handleContentChange = (e) => setContent(e.target.value);
+  const handleEditClick = () => {
+    if (!userStatus || userStatus === "user") {
+      alert("작성 권한이 없습니다.");
+      return;
+    }
+    setIsEditing(true);
   };
 
   useEffect(() => {
-    checkAccessToken(setUserId, setUserNickname, setUserStatus);
+    checkAccessToken();
     fetchPosts();
   }, []);
 
   return (
     <div className="create-article-container">
-      <div className="create-article">
-        {isEditing ? (
-          <div className="input-wrapper">
-            <AiOutlineClose
-              className="cancel-icon top-right"
-              onClick={handleCancel}
-            />
-            <input
-              type="text"
-              placeholder="글 제목을 입력하세요"
-              value={title}
-              onChange={handleTitleChange}
-              autoFocus
-            />
-            <textarea
-              placeholder="글 내용을 입력하세요"
-              value={content}
-              onChange={handleContentChange}
-            />
-            <div className="bottom-area">
-              <FaImage className="image-icon" />
-              <FaCheck
-                className="submit-icon bottom-right"
-                onClick={handleSubmit}
-              />
-            </div>
+      {selectedPostId ? (
+        <ReplySection
+          postId={selectedPostId}
+          userId={userId}
+          userNickname={userNickname}
+        />
+      ) : (
+        <>
+          <div className="create-article">
+            {isEditing ? (
+              <div className="input-wrapper">
+                <AiOutlineClose
+                  className="cancel-icon top-right"
+                  onClick={handleCancel}
+                />
+                <input
+                  type="text"
+                  placeholder="글 제목을 입력하세요"
+                  value={title}
+                  onChange={handleTitleChange}
+                  autoFocus
+                />
+                <textarea
+                  placeholder="글 내용을 입력하세요"
+                  value={content}
+                  onChange={handleContentChange}
+                />
+                <div className="bottom-area">
+                  <FaImage className="image-icon" />
+                  <FaCheck
+                    className="submit-icon bottom-right"
+                    onClick={handleSubmit}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="placeholder" onClick={handleEditClick}>
+                <span>제목을 작성해주세요</span>
+                <FaPencilAlt className="edit-icon" />
+              </div>
+            )}
           </div>
-        ) : (
-          <div className="placeholder" onClick={handleEditClick}>
-            <span>제목을 작성해주세요</span>
-            <FaPencilAlt className="edit-icon" />
-          </div>
-        )}
-      </div>
 
-      <div className="post-list">
-        {posts.map((post, index) => (
-          <div key={index} className="post-item">
-            <strong className="post-title">{post.title}</strong>
-            <p className="post-content">{post.content}</p>
-
-            <div className="post-stats-icons">
-              <span className="icon-item">
-                <FaHeart /> <span>{post.likes}</span>
-              </span>
-              <span className="icon-item">
-                <FaComment /> <span>{post.comments}</span>
-              </span>
-              <span className="icon-item">
-                <FaStar /> <span>{post.views}</span>
-              </span>
-            </div>
+          <div className="post-list">
+            {posts.map((post) => (
+              <div key={post.postId} className="post-item">
+                <div className="post-header">
+                  <strong className="post-title">{post.title}</strong>
+                  {post.id === userId && (
+                    <AiOutlineClose
+                      className="delete-icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(post.postId, post.id);
+                      }}
+                    />
+                  )}
+                </div>
+                <p className="post-content">{post.content}</p>
+                <div className="post-stats-icons">
+                  <span className="icon-item">
+                    <FaHeart /> <span>{post.likes}</span>
+                  </span>
+                  <span
+                    className="icon-item comment-icon"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleViewComments(post.postId);
+                    }}
+                  >
+                    <FaComment /> <span>{post.comments}</span>
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </div>
   );
 };
