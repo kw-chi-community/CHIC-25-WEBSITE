@@ -122,7 +122,7 @@ const CreateArticle = ({ selectedPostId, setSelectedPostId }) => {
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleContentChange = (e) => setContent(e.target.value);
   const handleEditClick = () => {
-    if (!userStatus || userStatus === "user") {
+    if (!userStatus) {
       alert("작성 권한이 없습니다.");
       return;
     }
