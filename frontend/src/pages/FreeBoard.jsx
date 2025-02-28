@@ -4,46 +4,44 @@ import Icons from "../components/Icons";
 import "../styles/FreeBoard.css";
 import CreateArticle from "../components/CreateArticle";
 import ReactGA4 from "react-ga4";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 
 const FreeBoard = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { postId } = useParams();
   const address = process.env.REACT_APP_BACKEND_ADDRESS;
 
   const [userId, setUserId] = useState(null);
   const [userNickname, setUserNickname] = useState(null);
   const [userStatus, setUserStatus] = useState(null);
+  const [selectedPostId, setSelectedPostId] = useState(postId || null);
 
-  const checkAccessToken = async (setUserId, setUserNickname) => {
+  const checkAccessToken = async () => {
     const token = localStorage.getItem("token");
-    console.log(token);
-    if (!token) return; // 토큰이 없으면 검증하지 않음
-    else {
-      try {
-        const response = await fetch(`${address}/verify`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`, // Bearer 형식으로 토큰 전송
-          },
-        });
+    if (!token) return;
 
-        const result = await response.json();
-        console.log(result);
+    try {
+      const response = await fetch(`${address}/verify`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-        if (result.success) {
-          setUserId(result.user.userId);
-          setUserNickname(result.user.userNickname);
-          setUserStatus(result.user.userStatus);
-        }
-      } catch (error) {
-        console.error("토큰 검증 중 오류 발생:", error);
+      const result = await response.json();
+      if (result.success) {
+        setUserId(result.user.userId);
+        setUserNickname(result.user.userNickname);
+        setUserStatus(result.user.userStatus);
+      } else {
         localStorage.removeItem("token");
-        window.location.href = "/freeboard";
       }
+    } catch (error) {
+      localStorage.removeItem("token");
     }
   };
+
   useEffect(() => {
-    checkAccessToken(setUserId, setUserNickname, setUserStatus);
+    checkAccessToken();
     ReactGA4.send({
       hitType: "pageview",
       page: location.pathname + location.search,
@@ -51,12 +49,32 @@ const FreeBoard = () => {
     });
   }, [location]);
 
+  useEffect(() => {
+    setSelectedPostId(postId || null);
+  }, [postId]);
+
+  const handleBoardClick = () => {
+    setSelectedPostId(null);
+    navigate("/freeboard");
+  };
+
   return (
     <div className="free-board">
       <Banner />
       <Icons />
-      <div className="board-container">자유게시판</div>
-      <CreateArticle />
+      <div className="board-container" onClick={handleBoardClick}>
+        자유게시판
+      </div>
+      <CreateArticle 
+        selectedPostId={selectedPostId} 
+        setSelectedPostId={(id) => {
+          setSelectedPostId(id);
+          navigate(`/freeboard/${id}`);
+        }} 
+        userId={userId}
+        userNickname={userNickname}
+        userStatus={userStatus}
+      />
     </div>
   );
 };
