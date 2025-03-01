@@ -194,3 +194,7 @@
   z-index: 20;
   right: 10px;
 }
+
+.icon-item.liked svg {
+  color: red !important;
+}

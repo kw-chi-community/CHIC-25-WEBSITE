@@ -9,5 +9,6 @@ router.get("/:postId", postController.getPostById); // 특정 게시글 조회
 router.post("/", postController.createPost); // 게시글 작성
 router.put("/:postId", postController.updatePost); // 게시글 수정
 router.delete("/:postId", postController.deletePost); // 게시글 삭제
+router.post("/:postId/like", postController.likePost); //게시글 좋아요
 
 module.exports = router;

@@ -22,6 +22,7 @@ const CreateArticle = ({ selectedPostId, setSelectedPostId }) => {
   const [userId, setUserId] = useState(null);
   const [userNickname, setUserNickname] = useState(null);
   const [userStatus, setUserStatus] = useState(null);
+  const [likedPosts, setLikedPosts] = useState(new Set());
 
   const checkAccessToken = async () => {
     const token = localStorage.getItem("token");
@@ -90,6 +91,40 @@ const CreateArticle = ({ selectedPostId, setSelectedPostId }) => {
     setTitle("");
     setContent("");
     setIsEditing(false);
+  };
+
+  const handleLike = async (postId) => {
+    if (!userId) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    console.log("좋아요 요청 postId:", postId, "userId:", userId);
+
+    try {
+      const response = await fetch(`${address}/posts/${postId}/like`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId }), // 사용자 ID 추가
+      });
+
+      if (!response.ok) throw new Error("좋아요 실패");
+
+      const data = await response.json();
+
+      // 좋아요 UI 업데이트
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.postId === postId
+            ? { ...post, likes: data.likes, likedUsers: data.likedUsers }
+            : post
+        )
+      );
+    } catch (error) {
+      console.error("좋아요 처리 오류:", error);
+    }
   };
 
   const handleSubmit = async () => {
@@ -196,8 +231,19 @@ const CreateArticle = ({ selectedPostId, setSelectedPostId }) => {
                 </div>
                 <p className="post-content">{post.content}</p>
                 <div className="post-stats-icons">
-                  <span className="icon-item">
-                    <FaHeart /> <span>{post.likes}</span>
+                  <span
+                    className="icon-item"
+                    onClick={() => handleLike(post.postId)}
+                  >
+                    <FaHeart
+                      style={{
+                        color: (post.likedUsers || []).includes(userId)
+                          ? "red"
+                          : "black",
+                      }}
+                    />
+
+                    <span>{post.likes}</span>
                   </span>
                   <span
                     className="icon-item comment-icon"
