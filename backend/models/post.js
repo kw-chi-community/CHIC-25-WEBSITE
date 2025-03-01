@@ -11,6 +11,7 @@ const postSchema = new mongoose.Schema({
   tags: { type: [String], default: [] }, // 태그 리스트
   viewCount: { type: Number, default: 0 }, // 조회수
   likes: { type: Number, default: 0 }, // 좋아요 수
+  likedUsers: { type: [String], default: [] }, // 좋아요 사용자 리스트
   createdAt: { type: Date, required: true }, // 댓글 작성 시간
   updatedAt: { type: Date, default: null }, // 댓글 수정 시간
 
